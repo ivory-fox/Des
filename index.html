@@ -18,6 +18,10 @@
         <div class="button-group">
             <button onclick="encryptData()">Encrypt</button>
             <button onclick="decryptData()">Decrypt</button>
+        </div>
+
+        <div class="button-group">
+            <button onclick="copyToClipboard()">Copy</button>
             <button onclick="clearOutput()">Clear</button>
         </div>
 
@@ -26,6 +30,9 @@
     </div>
     <script src="js/crypto-js.js"></script>
     <script>
+
+        let result = "";
+
         function encryptData() {
             var key = document.getElementById("key").value;
             var plaintext = document.getElementById("input").value;
@@ -34,8 +41,8 @@
                 mode: CryptoJS.mode.ECB,
                 padding: CryptoJS.pad.Pkcs7
             });
-            var encryptedHex = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
-            document.getElementById("output").innerHTML = "<p>Encrypted Data (hex): " + encryptedHex + "</p>";
+            result = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+            document.getElementById("output").innerHTML = "<p>" + result + "</p>";
         }
 
         function decryptData() {
@@ -48,14 +55,25 @@
                 mode: CryptoJS.mode.ECB,
                 padding: CryptoJS.pad.Pkcs7
             });
-            var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+            result = decrypted.toString(CryptoJS.enc.Utf8);
 
-            document.getElementById("output").innerHTML += "<p>Расшифрованные данные: " + decryptedText + "</p>";
+            document.getElementById("output").innerHTML += "<p>" + result + "</p>";
         }
 
         function clearOutput() {
             document.getElementById("output").innerHTML = "";
         }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(result)
+                .then(() => {
+                    alert("Copied to clipboard!");
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        }
+
     </script>
 </body>
 

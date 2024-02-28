@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DES Encrypt/Decryp</title>
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -32,6 +33,18 @@
     <script>
 
         let result = "";
+
+        if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('Service worker registered:', registration);
+          })
+          .catch(function(error) {
+            console.log('Service worker registration failed:', error);
+          });
+      });
+    }
 
         function encryptData() {
             var key = document.getElementById("key").value;
